@@ -1,4 +1,5 @@
 import { BrokenRadio } from "./broken-radio"
+import './assets/broken-radio.css'
 
 let container = document.getElementById('broken-radio')
 

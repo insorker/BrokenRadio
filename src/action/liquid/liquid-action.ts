@@ -43,7 +43,7 @@ export class LiquidAction extends Action {
       [
         {x: c.x - 1, y: c.y},
         {x: c.x + 1, y: c.y},
-      ]
+      ],
     ]
   }
 }

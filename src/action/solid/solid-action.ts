@@ -39,7 +39,7 @@ export class SolidAction extends Action {
       [
         {x: c.x - 1, y: c.y + 1},
         {x: c.x + 1, y: c.y + 1},
-      ]
+      ],
     ]
   }
 }

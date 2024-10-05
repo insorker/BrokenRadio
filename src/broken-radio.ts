@@ -20,8 +20,6 @@ export class BrokenRadio {
     this.canvas.height = height
     this.canvas.style.width = `${width * zoom}px`
     this.canvas.style.height = `${height * zoom}px`
-    this.canvas.style.border = `1px solid black`
-    this.canvas.style.imageRendering = `pixelated`
 
     this.buttonList = document.createElement('div')
     this.buttonList.appendChild(this.createElementButton('Empty', Empty))

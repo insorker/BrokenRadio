@@ -1,0 +1,17 @@
+#broken-radio {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#broken-radio canvas {
+  margin: 0 auto;
+  border: 1px solid black;
+  image-rendering: pixelated;
+}
+
+#broken-radio div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

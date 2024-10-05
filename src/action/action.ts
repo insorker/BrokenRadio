@@ -45,7 +45,7 @@ export abstract class Action {
 
   protected static getNextLife(e: Element) {
     switch(e.constructor.name) {
-      case "fire": return Smoke
+      case "Fire": return Smoke
       default: return Empty
     }
   }
@@ -54,8 +54,6 @@ export abstract class Action {
     let e = w.get(c)
 
     if (e.isLiving) {
-      // e.color = ColorStrategy.fade(e.baseColor, e.lifeTimeLeft / e.lifeTimeTotal)
-
       if (e.lifeTimeLeft-- == 0) {
         w.set(c, new (Action.getNextLife(e))().init())
       }

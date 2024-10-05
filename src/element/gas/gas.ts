@@ -22,7 +22,7 @@ export class Steam extends Gas {
 }
 
 export class Smoke extends Gas {
-  static baseColor: Color = [50, 50, 50, 200]
+  static baseColor: Color = [40, 40, 40, 220]
   baseColor: Color = Smoke.baseColor
 
   density: number = 0.9
