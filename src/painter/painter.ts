@@ -1,4 +1,5 @@
-export type PaintColor = [number, number, number, number]
+import { World } from "../world/world"
+import { Color } from "./color"
 
 export class Painter {
   private cvs: HTMLCanvasElement
@@ -40,20 +41,7 @@ export class Painter {
     }
   }
 
-  setPixel(x: number, y: number, color: PaintColor) {
-    let i = (y * this.width + x) * 4
-    
-    if (this.check(x, y) == false) {
-      return
-    }
-    else {
-      for (let j = 0; j < 4; j++) {
-        this.pixels[i + j] = color[j]
-      }
-    }
-  }
-
-  paintBackground(color: PaintColor) {
+  paintBackground(color: Color) {
     for (let i = 0; i < this.pixels.length; i += 4) {
       for (let j = 0; j < 4; j++) {
         this.pixels[i + j] = color[j]
@@ -61,7 +49,7 @@ export class Painter {
     }
   }
 
-  paintMouse(color: PaintColor) {
+  paintMouse(color: Color) {
     if (this.check(this.mousex, this.mousey) == false) {
       return
     }
@@ -79,6 +67,14 @@ export class Painter {
     }
   }
 
+  paintWorld(world: World) {
+    for (let x = 0; x < this.width; x++) {
+      for (let y = 0; y < this.height; y++) {
+        this.setPixel(x, y, world.get({x: x, y: y}).color)
+      }
+    }
+  }
+
   paint() {
     this.ctx.putImageData(this.id, 0, 0)
   }
@@ -89,6 +85,19 @@ export class Painter {
     }
 
     return true
+  }
+
+  private setPixel(x: number, y: number, color: Color) {
+    let i = (y * this.width + x) * 4
+    
+    if (this.check(x, y) == false) {
+      return
+    }
+    else {
+      for (let j = 0; j < 4; j++) {
+        this.pixels[i + j] = color[j]
+      }
+    }
   }
 
   private mousepos(evt: MouseEvent) {
