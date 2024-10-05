@@ -1,5 +1,5 @@
 import { World, Coordinate } from "../world/world"
-import { Element, Empty, Smoke } from '../element/elements'
+import { ElementType, Element, Empty, Smoke } from '../element/elements'
 
 export type State = [boolean, Coordinate]
 
@@ -44,8 +44,8 @@ export abstract class Action {
   }
 
   protected static getNextLife(e: Element) {
-    switch(e.constructor.name) {
-      case "Fire": return Smoke
+    switch(e.type) {
+      case ElementType.Fire: return Smoke
       default: return Empty
     }
   }

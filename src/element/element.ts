@@ -1,6 +1,16 @@
 import { Color, ColorStrategy } from "../painter/color"
 
+export enum ElementType {
+  Element, Empty,
+  Solid, Sand, Ice, Stone, Wood,
+  Liquid, Water, Oil,
+  Gas, Steam, Smoke,
+  Fire,
+}
+
 export abstract class Element {
+  type = ElementType.Element
+
   static baseColor: Color = [0, 0, 0, 255]
   baseColor: Color = Element.baseColor
   colors: Color[] = []
@@ -33,6 +43,8 @@ export abstract class Element {
 }
 
 export class Empty extends Element {
+  type = ElementType.Empty
+
   static baseColor: Color = [255, 255, 255, 255]
   baseColor: Color = Empty.baseColor
   color: Color = [255, 255, 255, 255]

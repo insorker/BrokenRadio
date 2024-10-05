@@ -1,7 +1,7 @@
 import { Coordinate, World } from "../../world/world"
 import { Action, State } from "../action"
 import { ColorStrategy } from "../../painter/color"
-import { Element, Empty, Water, Steam, Fire } from "../../element/elements" 
+import { ElementType, Element, Empty, Water, Steam, Fire } from "../../element/elements" 
 
 export class FireAction extends Action {
   protected static override _update(w: World, c: Coordinate): State {
@@ -43,9 +43,9 @@ export class FireAction extends Action {
   }
 
   private static getParticleAfterFire(e: Element) {
-    switch (e.constructor.name) {
-      case "Water": return Steam
-      case "Ice": return Water
+    switch (e.type) {
+      case ElementType.Water: return Steam
+      case ElementType.Ice: return Water
       default: return Empty
     }
   }

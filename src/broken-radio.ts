@@ -1,6 +1,6 @@
 import { Painter } from './painter/painter'
 import { Coordinate, World } from "./world/world"
-import { Empty, Sand, Ice, Stone, Wood, Water, Oil, Steam, Smoke, Fire } from './element/elements'
+import { ElementType, Empty, Sand, Ice, Stone, Wood, Water, Oil, Steam, Smoke, Fire } from './element/elements'
 import { SolidAction, LiquidAction, GasAction, SmokeAction, FireAction } from './action/actions'
 
 export class BrokenRadio {
@@ -61,16 +61,16 @@ export class BrokenRadio {
   }
 
   private updateElement(c: Coordinate) {
-    switch(this.world.get(c).constructor.name) {
-      case "Sand": SolidAction.update(this.world, c); break
-      case "Ice": SolidAction.update(this.world, c); break
-      case "Wood": SolidAction.update(this.world, c); break
-      case "Stone": SolidAction.update(this.world, c); break
-      case "Water": LiquidAction.update(this.world, c); break
-      case "Oil": LiquidAction.update(this.world, c); break
-      case "Steam": GasAction.update(this.world, c); break
-      case "Smoke": SmokeAction.update(this.world, c); break
-      case "Fire": FireAction.update(this.world, c); break
+    switch(this.world.get(c).type) {
+      case ElementType.Sand: SolidAction.update(this.world, c); break
+      case ElementType.Ice: SolidAction.update(this.world, c); break
+      case ElementType.Wood: SolidAction.update(this.world, c); break
+      case ElementType.Stone: SolidAction.update(this.world, c); break
+      case ElementType.Water: LiquidAction.update(this.world, c); break
+      case ElementType.Oil: LiquidAction.update(this.world, c); break
+      case ElementType.Steam: GasAction.update(this.world, c); break
+      case ElementType.Smoke: SmokeAction.update(this.world, c); break
+      case ElementType.Fire: FireAction.update(this.world, c); break
     }
   }
 

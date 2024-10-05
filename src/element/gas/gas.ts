@@ -1,7 +1,9 @@
 import { Color, ColorStrategy } from "../../painter/color"
-import { Element } from "../element"
+import { Element, ElementType } from "../element"
 
 export abstract class Gas extends Element {
+  type = ElementType.Gas
+
   density: number = 0.5
 
   maxSpeed: number = 0.3
@@ -15,6 +17,8 @@ export abstract class Gas extends Element {
 }
 
 export class Steam extends Gas {
+  type = ElementType.Steam
+
   static baseColor: Color = [200, 200, 200, 200]
   baseColor: Color = Steam.baseColor
 
@@ -22,6 +26,8 @@ export class Steam extends Gas {
 }
 
 export class Smoke extends Gas {
+  type = ElementType.Smoke
+
   static baseColor: Color = [40, 40, 40, 220]
   baseColor: Color = Smoke.baseColor
 

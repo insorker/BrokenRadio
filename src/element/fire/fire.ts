@@ -1,7 +1,9 @@
 import { Color, ColorStrategy } from "../../painter/color"
-import { Element } from "../element"
+import { Element, ElementType } from "../element"
 
 export class Fire extends Element {
+  type = ElementType.Fire
+
   static baseColor: Color = [255, 31, 31, 255]
   baseColor: Color = Fire.baseColor
   colors: Color[] = [
