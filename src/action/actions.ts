@@ -1,7 +1,6 @@
-import { SolidAction } from "./solid/solid-action"
-import { LiquidAction } from './liquid/liquid-action'
-import { GasAction } from './gas/gas-action'
-import { SmokeAction } from './gas/smoke-action'
-import { FireAction } from './fire/fire-action'
+import { Action } from './action'
+import { FireAction } from './fire-action'
+import { SmokeAction } from './smoke-action'
 
-export { SolidAction, LiquidAction, GasAction, SmokeAction, FireAction }
+export { Action, FireAction, SmokeAction, }
+

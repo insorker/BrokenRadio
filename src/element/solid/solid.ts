@@ -1,4 +1,4 @@
-import { Color } from "../../painter/color"
+import { Color, ColorStrategy } from "../../painter/color"
 import { Element, ElementType } from "../element"
 
 export abstract class Solid extends Element {
@@ -7,22 +7,25 @@ export abstract class Solid extends Element {
   isPassable: boolean = false
   density: number = 10.0
 
-  maxSpeed: number = 2.0
-  acceleration: number = 0.5
+  init() {
+    super.init()
+
+    this.color = ColorStrategy.vary(this.baseColor)
+
+    return this
+  }
 }
 
 export class Sand extends Solid {
   type = ElementType.Sand
 
-  static baseColor: Color = [220, 177, 89, 255]
-  baseColor: Color = Sand.baseColor
+  baseColor: Color = [220, 177, 89, 255]
 }
 
 export class Ice extends Solid {
   type = ElementType.Ice
 
-  static baseColor: Color = [140, 204, 255, 255]
-  baseColor: Color = Ice.baseColor
+  baseColor: Color = [140, 204, 255, 255]
 
   density: number = 4.0
 
@@ -32,27 +35,19 @@ export class Ice extends Solid {
 export class Stone extends Solid {
   type = ElementType.Stone
 
-  static baseColor: Color = [125, 128, 131, 255]
-  baseColor: Color = Stone.baseColor
+  baseColor: Color = [125, 128, 131, 255]
 
   isMovable: boolean = false
   isPassable: boolean = false
-
-  maxSpeed: number = 0.0
-  acceleration: number = 0.0
 }
 
 export class Wood extends Solid {
   type = ElementType.Wood
 
-  static baseColor: Color = [70, 40, 29, 255]
-  baseColor: Color = Wood.baseColor
+  baseColor: Color = [70, 40, 29, 255]
 
   isMovable: boolean = false
   isPassable: boolean = false
-
-  maxSpeed: number = 0.0
-  acceleration: number = 0.0
 
   isFlammable: boolean = true
 }

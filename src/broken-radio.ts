@@ -1,7 +1,7 @@
 import { Painter } from './painter/painter'
 import { Coordinate, World } from "./world/world"
 import { ElementType, Empty, Sand, Ice, Stone, Wood, Water, Oil, Steam, Smoke, Fire } from './element/elements'
-import { SolidAction, LiquidAction, GasAction, SmokeAction, FireAction } from './action/actions'
+import { Action, SmokeAction, FireAction } from './action/actions'
 
 export class BrokenRadio {
   container: HTMLElement
@@ -46,7 +46,7 @@ export class BrokenRadio {
 
     this.painter.paintBackground([255, 255, 255, 255])
     this.painter.paintWorld(this.world)
-    this.painter.paintMouse(this.pen.baseColor)
+    this.painter.paintMouse(new this.pen().init().baseColor)
     this.painter.paint()
   }
 
@@ -62,15 +62,9 @@ export class BrokenRadio {
 
   private updateElement(c: Coordinate) {
     switch(this.world.get(c).type) {
-      case ElementType.Sand: SolidAction.update(this.world, c); break
-      case ElementType.Ice: SolidAction.update(this.world, c); break
-      case ElementType.Wood: SolidAction.update(this.world, c); break
-      case ElementType.Stone: SolidAction.update(this.world, c); break
-      case ElementType.Water: LiquidAction.update(this.world, c); break
-      case ElementType.Oil: LiquidAction.update(this.world, c); break
-      case ElementType.Steam: GasAction.update(this.world, c); break
       case ElementType.Smoke: SmokeAction.update(this.world, c); break
       case ElementType.Fire: FireAction.update(this.world, c); break
+      default: Action.update(this.world, c); break
     }
   }
 
@@ -100,7 +94,7 @@ export class BrokenRadio {
               y: this.painter.mousey + j
             }
 
-            if (this.world.check(c) && Math.random() > 0.4) {
+            if (this.world.check(c) && Math.random() > 0.5) {
               this.world.set(c, new this.pen().init())
             }
           }

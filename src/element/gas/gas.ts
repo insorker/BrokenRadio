@@ -1,26 +1,21 @@
-import { Color, ColorStrategy } from "../../painter/color"
+import { Color } from "../../painter/color"
 import { Element, ElementType } from "../element"
 
 export abstract class Gas extends Element {
   type = ElementType.Gas
 
   density: number = 0.5
-
-  maxSpeed: number = 0.3
-  acceleration: number = 0.05
-
-  init() {
-    this.color = ColorStrategy.monochrome(this.baseColor)
-
-    return this
-  }
+  protected minSpeedX: number = 0.2
+  protected maxSpeedX: number = 0.4
+  protected maxSpeedY: number = 0.4
+  protected resistanceX: number = 0.0
+  protected resistanceY: number = 0.90
 }
 
 export class Steam extends Gas {
   type = ElementType.Steam
 
-  static baseColor: Color = [200, 200, 200, 200]
-  baseColor: Color = Steam.baseColor
+  baseColor: Color = [200, 200, 200, 200]
 
   density: number = 0.3
 }
@@ -28,8 +23,7 @@ export class Steam extends Gas {
 export class Smoke extends Gas {
   type = ElementType.Smoke
 
-  static baseColor: Color = [40, 40, 40, 220]
-  baseColor: Color = Smoke.baseColor
+  baseColor: Color = [40, 40, 40, 220]
 
   density: number = 0.9
 

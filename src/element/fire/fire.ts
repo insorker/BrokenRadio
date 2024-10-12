@@ -1,11 +1,10 @@
-import { Color, ColorStrategy } from "../../painter/color"
+import { Color } from "../../painter/color"
 import { Element, ElementType } from "../element"
 
 export class Fire extends Element {
   type = ElementType.Fire
 
-  static baseColor: Color = [255, 31, 31, 255]
-  baseColor: Color = Fire.baseColor
+  baseColor: Color = [255, 31, 31, 255]
   colors: Color[] = [
     [255, 31, 31, 255],
     [234, 90, 0, 255],
@@ -22,10 +21,4 @@ export class Fire extends Element {
   isLiving: boolean = true
   lifeTimeTotal: number = 100 + Math.floor(Math.random() * 50)
   lifeTimeLeft: number = this.lifeTimeTotal
-
-  init() {
-    this.color = ColorStrategy.blink(this.colors, this.lifeTimeLeft % this.colors.length)
-
-    return this
-  }
 }

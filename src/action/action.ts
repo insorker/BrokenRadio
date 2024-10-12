@@ -1,62 +1,123 @@
 import { World, Coordinate } from "../world/world"
 import { ElementType, Element, Empty, Smoke } from '../element/elements'
+import { Environment } from "../environment/environment"
 
 export type State = [boolean, Coordinate]
 
-export abstract class Action {
+export class Action {
   static update(w: World, c: Coordinate) {
-    for (let i = 0; i < this.getSpeed(w, c); i++) {
-      let state = this._update(w, c)
+    this._update(w, c)
 
-      if (state[0]) {
-        c = state[1]
-        continue
-      }
-
-      this.setSpeed(w, c, 0)
-      break
-    }
-
-    this.updateSpeed(w, c)
     this.updateLife(w, c)
+
+    this.updateMovement(w, c)
   }
 
   protected static _update(_w: World, _c: Coordinate): State { return [false, {x: 0, y: 0}]}
 
-  protected static getSpeed(w: World, c: Coordinate): number {
-    let e = w.get(c)
-    const integer = Math.floor(e.speed)
-    const decimal = e.speed - Math.trunc(e.speed)
+  private static movementCheck(w: World, c: Coordinate, nc: Coordinate): boolean {
+    let e = w.get(c), ne = w.get(nc)
 
-    return integer + (Math.random() < decimal ? 1 : 0)
+    if (!w.check(nc)) return false
+    if (!w.get(nc).isPassable) return false
+    if (e.density == ne.density) return false
+    if (e.density == Environment.density) return false
+    if (e.density < Environment.density && ne.density < e.density) return false
+    if (e.density > Environment.density && ne.density > e.density) return false
+
+    return true
   }
 
-  protected static setSpeed(w: World, c: Coordinate, s: number) {
+  private static getMovingPath(w: World, c: Coordinate): Coordinate[] {
     let e = w.get(c)
+    let path: Coordinate[] = []
+    let distX = e.getSpeedX()
+    let distY = e.getSpeedY()
 
-    e.speed = Math.min(s, e.maxSpeed)
+    if (distX == 0 && distY == 0) {
+      path = []
+    }
+    else if (distX == 0) {
+      for (let i = 1; i <= distY; i++) {
+        path.push({x: c.x, y: c.y + i * e.getDirectionY()})
+      }
+    }
+    else if (distY == 0) {
+      for (let i = 1; i <= distX; i++) {
+        path.push({x: c.x + i * e.getDirectionX(), y: c.y})
+      }
+    }
+    else {
+      let k = distY / distX
+      let lastY = 0, nextY = 0
+
+      for (let i = 1; i <= distX; i++) {
+        lastY = nextY + 1
+        nextY = Math.round(k * i)
+
+        for (let j = lastY; j <= nextY; j++) {
+          path.push({
+            x: c.x + i * e.getDirectionX(),
+            y: c.y + j * e.getDirectionY()
+          })
+        }
+      }
+    }
+    
+    return path
   }
 
-  protected static updateSpeed(w: World, c: Coordinate) {
+  private static updateMovement(w: World, c: Coordinate) {
     let e = w.get(c)
 
-    e.speed = Math.min(e.speed + e.acceleration, e.maxSpeed)
+    if (!e.isMovable) return
+
+    let path = this.getMovingPath(w, c)
+
+    for (let nc of path) {
+      if (!this.movementCheck(w, c, nc)) {
+        if (nc.y == c.y) {
+          e.reverseDirectionX()
+        }
+        else if (nc.x == c.x) {
+          e.mergeSpeedToX()
+          e.randDirectionX()
+        }
+        else {
+          Math.random() > 0.5 ? e.mergeSpeedToX() : e.mergeSpeedToY()
+        }
+
+        break
+      }
+
+      w.swap(c, nc)
+      c = nc
+    }
+
+    let fallingCheck = this.movementCheck(w, c, {x: c.x, y: c.y + e.getDirectionGravity()})
+    let moveLeftCheck = this.movementCheck(w, c, {x: c.x - 1, y: c.y})
+    let moveRightCheck = this.movementCheck(w, c, {x: c.x + 1, y: c.y})
+
+    e.updateSpeed(
+      fallingCheck,
+      !fallingCheck && !moveLeftCheck && !moveRightCheck
+    )
   }
 
-  protected static getNextLife(e: Element) {
+  private static getNextLife(e: Element) {
     switch(e.type) {
       case ElementType.Fire: return Smoke
       default: return Empty
     }
   }
 
-  protected static updateLife(w: World, c: Coordinate) {
+  private static updateLife(w: World, c: Coordinate) {
     let e = w.get(c)
 
-    if (e.isLiving) {
-      if (e.lifeTimeLeft-- == 0) {
-        w.set(c, new (Action.getNextLife(e))().init())
-      }
+    if (!e.isLiving) return
+
+    if (e.lifeTimeLeft-- == 0) {
+      w.set(c, new (Action.getNextLife(e))().init())
     }
   }
 }

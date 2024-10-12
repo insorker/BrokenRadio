@@ -10,7 +10,7 @@ export class World {
   constructor(width: number, height: number) {
     this.width = width
     this.height = height
-    this.elements = new Array(this.width * this.height).fill(0).map(() => new Empty())
+    this.elements = new Array(this.width * this.height).fill(0).map(() => new Empty().init())
   }
 
   check(c: Coordinate): boolean {

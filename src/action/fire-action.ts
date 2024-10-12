@@ -1,7 +1,7 @@
-import { Coordinate, World } from "../../world/world"
-import { Action, State } from "../action"
-import { ColorStrategy } from "../../painter/color"
-import { ElementType, Element, Empty, Water, Steam, Fire } from "../../element/elements" 
+import { Element, ElementType, Empty, Fire, Steam, Water } from "../element/elements"
+import { ColorStrategy } from "../painter/color"
+import { Coordinate, World } from "../world/world"
+import { Action, State } from "./action"
 
 export class FireAction extends Action {
   protected static override _update(w: World, c: Coordinate): State {
@@ -21,7 +21,7 @@ export class FireAction extends Action {
         if (!w.check(nc)) continue
 
         if (w.get(nc).isFlammable) {
-          let fire = new Fire()
+          let fire = new Fire().init()
 
           fire.lifeTimeTotal *= 4
           fire.lifeTimeLeft = fire.lifeTimeTotal
