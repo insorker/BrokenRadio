@@ -1,64 +1,56 @@
-import { Painter } from './painter/painter'
+import { Action, FireAction, SmokeAction, SparkAction } from './action/actions'
+import { Keyboard } from './controller/keyboard'
+import { Mouse } from './controller/mouse'
+import { Painter } from './controller/painter'
+import { ElementType } from './element/elements'
 import { Coordinate, World } from "./world/world"
-import { ElementType, Empty, Sand, Ice, Stone, Wood, Water, Oil, Steam, Smoke, Fire } from './element/elements'
-import { Action, SmokeAction, FireAction, SparkAction } from './action/actions'
 
 export class BrokenRadio {
-  container: HTMLElement
-  canvas: HTMLCanvasElement
-  buttonList: HTMLDivElement
+  protected mouse: Mouse
+  protected keyboard: Keyboard
 
-  pen = Empty
-  painter: Painter
-  world: World
+  protected painter: Painter
+  protected world: World
 
   constructor(container: HTMLElement, width: number, height: number, zoom: number) {
-    this.container = container
+    let canvas = document.createElement('canvas')
 
-    this.canvas = document.createElement('canvas')
-    this.canvas.width = width
-    this.canvas.height = height
-    this.canvas.style.width = `${width * zoom}px`
-    this.canvas.style.height = `${height * zoom}px`
+    canvas.width = width
+    canvas.height = height
+    canvas.style.width = `${width * zoom}px`
+    canvas.style.height = `${height * zoom}px`
+    container.appendChild(canvas)
 
-    this.buttonList = document.createElement('div')
-    this.buttonList.appendChild(this.createElementButton('Empty', Empty))
-    this.buttonList.appendChild(this.createElementButton('Sand', Sand))
-    this.buttonList.appendChild(this.createElementButton('Ice', Ice))
-    this.buttonList.appendChild(this.createElementButton('Stone', Stone))
-    this.buttonList.appendChild(this.createElementButton('Wood', Wood))
-    this.buttonList.appendChild(this.createElementButton('Water', Water))
-    this.buttonList.appendChild(this.createElementButton('Oil', Oil))
-    this.buttonList.appendChild(this.createElementButton('Steam', Steam))
-    this.buttonList.appendChild(this.createElementButton('Smoke', Smoke))
-    this.buttonList.appendChild(this.createElementButton('Fire', Fire))
+    this.mouse = new Mouse(canvas)
+    this.keyboard = new Keyboard()
 
-    this.container.appendChild(this.canvas)
-    this.container.appendChild(this.buttonList)
-
-    this.painter = new Painter(this.canvas)
-    this.world = new World(this.canvas.width, this.canvas.height)
+    this.painter = new Painter(canvas)
+    this.world = new World(canvas.width, canvas.height)
   }
 
   update() {
+    this.paintBackground()
+
     this.updateWorld()
-    this.updateMouse()
+    this._update()
 
-    this.painter.paintBackground([255, 255, 255, 255])
-    this.painter.paintWorld(this.world)
-    this.painter.paintMouse(new this.pen().init().baseColor)
-    this.painter.paint()
+    this.paintWorld()
+    this._paint()
+
+    this.painter.paintToCanvas()
   }
 
-  private createElementButton(name: string, ElementClass: any) {
-    let button = document.createElement('button')
-
-    button.type = 'button'
-    button.textContent = name
-    button.onclick = () => { this.pen = ElementClass }
-
-    return button
+  protected paintBackground() {
+    for (let x = 0; x < this.painter.width; x++) {
+      for (let y = 0; y < this.painter.height; y++) {
+        this.painter.setPixel(x, y, [255, 255, 255, 255])
+      }
+    }
   }
+
+  protected _update() { }
+
+  protected _paint() { }
 
   private updateElement(c: Coordinate) {
     switch(this.world.get(c).type) {
@@ -81,25 +73,10 @@ export class BrokenRadio {
     }
   }
 
-  private updateMouse() {
-    if (this.painter.isPainting) {
-      if (this.painter.check(this.painter.mousex, this.painter.mousey) == false) {
-        return
-      }
-
-      for (let i = -this.painter.mouser; i <= this.painter.mouser; i++) {
-        for (let j = -this.painter.mouser; j <= this.painter.mouser; j++) {
-          if (i * i + j * j < this.painter.mouser * this.painter.mouser) {
-            let c = {
-              x: this.painter.mousex + i,
-              y: this.painter.mousey + j
-            }
-
-            if (this.world.check(c) && Math.random() > 0.5) {
-              this.world.set(c, new this.pen().init())
-            }
-          }
-        }
+  private paintWorld() {
+    for (let x = 0; x < this.world.width; x++) {
+      for (let y = 0; y < this.world.height; y++) {
+        this.painter.setPixel(x, y, this.world.get({x: x, y: y}).color)
       }
     }
   }

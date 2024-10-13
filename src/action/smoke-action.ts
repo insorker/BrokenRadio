@@ -1,4 +1,4 @@
-import { ColorStrategy } from "../painter/color"
+import { ColorStrategy } from "../color/color"
 import { Coordinate, World } from "../world/world"
 import { Action, State } from "./action"
 

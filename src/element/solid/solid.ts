@@ -1,4 +1,4 @@
-import { Color, ColorStrategy } from "../../painter/color"
+import { Color, ColorStrategy } from "../../color/color"
 import { Element, ElementType } from "../element"
 
 export abstract class Solid extends Element {

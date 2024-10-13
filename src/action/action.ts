@@ -1,4 +1,4 @@
-import { World, Coordinate } from "../world/world"
+import { Coordinate, World } from "../world/world"
 import { ElementType, Element, Empty, Smoke } from '../element/elements'
 import { Environment } from "../environment/environment"
 
@@ -15,11 +15,11 @@ export class Action {
 
   protected static _update(_w: World, _c: Coordinate): State { return [false, {x: 0, y: 0}]}
 
-  private static movementCheck(w: World, c: Coordinate, nc: Coordinate): boolean {
+  static movementCheck(w: World, c: Coordinate, nc: Coordinate): boolean {
     let e = w.get(c), ne = w.get(nc)
 
     if (!w.check(nc)) return false
-    if (!w.get(nc).isPassable) return false
+    if (!ne.isPassable) return false
     if (e.density == ne.density) return false
     if (e.density == Environment.density) return false
     if (e.density < Environment.density && ne.density < e.density) return false

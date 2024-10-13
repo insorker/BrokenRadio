@@ -1,8 +1,8 @@
+import { Color, ColorStrategy } from "../color/color"
 import { Environment } from "../environment/environment"
-import { Color, ColorStrategy } from "../painter/color"
 
 export enum ElementType {
-  Element, Empty,
+  Element, Empty, Common,
   Solid, Sand, Ice, Stone, Wood,
   Liquid, Water, Oil,
   Gas, Steam, Smoke,
@@ -154,4 +154,12 @@ export class Empty extends Element {
   baseColor: Color = [255, 255, 255, 255]
 
   isMovable: boolean = false
+}
+
+export class Common extends Element {
+  type = ElementType.Common
+
+  isMovable: boolean = false
+  isPassable: boolean = false
+  density: number = 100.0
 }

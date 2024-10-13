@@ -1,4 +1,4 @@
-import { Color } from "../../painter/color"
+import { Color } from "../../color/color"
 import { Element, ElementType } from "../element"
 
 export abstract class Gas extends Element {

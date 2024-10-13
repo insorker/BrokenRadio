@@ -1,5 +1,5 @@
-import { Element, ElementType, Empty, Fire, Steam, Water, Spark } from "../element/elements"
-import { ColorStrategy } from "../painter/color"
+import { ColorStrategy } from "../color/color"
+import { Element, ElementType, Empty, Fire, Spark, Steam, Water } from "../element/elements"
 import { Coordinate, World } from "../world/world"
 import { Action, State } from "./action"
 
