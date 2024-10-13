@@ -1,6 +1,5 @@
 import { Action } from './action'
-import { FireAction } from './fire-action'
 import { SmokeAction } from './smoke-action'
+import { FireAction, SparkAction } from './fire-action'
 
-export { Action, FireAction, SmokeAction, }
-
+export { Action, SmokeAction, FireAction, SparkAction }

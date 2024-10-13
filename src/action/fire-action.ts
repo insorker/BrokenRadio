@@ -1,4 +1,4 @@
-import { Element, ElementType, Empty, Fire, Steam, Water } from "../element/elements"
+import { Element, ElementType, Empty, Fire, Steam, Water, Spark } from "../element/elements"
 import { ColorStrategy } from "../painter/color"
 import { Coordinate, World } from "../world/world"
 import { Action, State } from "./action"
@@ -20,10 +20,17 @@ export class FireAction extends Action {
         if (i == 0 && j == 0) continue
         if (!w.check(nc)) continue
 
+        if (i == 0 && j == -1 && w.get(nc).type == ElementType.Empty) {
+          if (Math.random() < Fire.sparkProbability) {
+            w.set(nc, new Spark().init())
+          }
+        }
+
         if (w.get(nc).isFlammable) {
           let fire = new Fire().init()
 
-          fire.lifeTimeTotal *= 4
+          fire.isMovable = w.get(nc).isMovable
+          fire.lifeTimeTotal *= Fire.lifeTimeExtensionCoef
           fire.lifeTimeLeft = fire.lifeTimeTotal
 
           w.set(nc, fire)
@@ -48,5 +55,16 @@ export class FireAction extends Action {
       case ElementType.Ice: return Water
       default: return Empty
     }
+  }
+}
+
+export class SparkAction extends Action {
+  protected static override _update(w: World, c: Coordinate): State {
+    let e = w.get(c)
+    
+    e.color = ColorStrategy.blink(e.colors, e.lifeTimeLeft % e.colors.length)
+    e.color = ColorStrategy.fade(e.color, e.lifeTimeLeft / e.lifeTimeTotal)
+
+    return [false, c]
   }
 }

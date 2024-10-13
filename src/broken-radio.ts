@@ -1,7 +1,7 @@
 import { Painter } from './painter/painter'
 import { Coordinate, World } from "./world/world"
 import { ElementType, Empty, Sand, Ice, Stone, Wood, Water, Oil, Steam, Smoke, Fire } from './element/elements'
-import { Action, SmokeAction, FireAction } from './action/actions'
+import { Action, SmokeAction, FireAction, SparkAction } from './action/actions'
 
 export class BrokenRadio {
   container: HTMLElement
@@ -64,6 +64,7 @@ export class BrokenRadio {
     switch(this.world.get(c).type) {
       case ElementType.Smoke: SmokeAction.update(this.world, c); break
       case ElementType.Fire: FireAction.update(this.world, c); break
+      case ElementType.Spark: SparkAction.update(this.world, c); break
       default: Action.update(this.world, c); break
     }
   }

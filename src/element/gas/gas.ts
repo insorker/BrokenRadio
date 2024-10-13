@@ -23,7 +23,7 @@ export class Steam extends Gas {
 export class Smoke extends Gas {
   type = ElementType.Smoke
 
-  baseColor: Color = [40, 40, 40, 220]
+  baseColor: Color = [100, 100, 100, 220]
 
   density: number = 0.9
 

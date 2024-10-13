@@ -6,7 +6,7 @@ export enum ElementType {
   Solid, Sand, Ice, Stone, Wood,
   Liquid, Water, Oil,
   Gas, Steam, Smoke,
-  Fire,
+  Fire, Spark
 }
 
 export abstract class Element {
