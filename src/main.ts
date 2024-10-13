@@ -1,4 +1,4 @@
-import { CommonLab, PlayerLab } from './lab'
+import { PlayerLab } from './lab'
 import './assets/broken-radio.css'
 
 let container = document.getElementById('broken-radio')
