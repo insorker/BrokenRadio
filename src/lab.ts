@@ -46,7 +46,7 @@ export class CommonLab extends BrokenRadio {
   protected override _paint(): void {
     super._paint()
 
-    this.paintMouse(4, new this.pen().init().color)
+    this.paintMouse(4, new this.pen().init().baseColor)
   }
 
   protected paintMouse(radius: number, color: Color) {
